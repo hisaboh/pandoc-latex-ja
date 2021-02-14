@@ -13,37 +13,31 @@ docker pull hisaboh/pandoc-latex-ja
 docker run -it --mount type=bind,src=(pwd),dst=/workdir --mount type=bind,src=/System/Library/Fonts,dst=/usr/share/fonts/SystemLibraryFonts hisaboh/pandoc-latex-ja
 ```
 
-### Compile markdown to pdf
-```
-$ pandoc -s hello.md -o hello.pdf -N\
-    --pdf-engine=lualatex \
-    -V documentclass:ltjarticle \
-    -V luatexjapresetoptions=ipa
-```
-
-```
-$ pandoc -s hello.md -o hello-hiragino.pdf -N\
-    --pdf-engine=lualatex \
-    -V indent=true\
-    -V documentclass:ltjarticle \
-    -V geometry:margin=1in \
-    -F pandoc-crossref \
-    -M "crossrefYaml=/usr/local/pandoc/config/crossref.yaml" \
-    --listings -H /usr/local/pandoc/config/listings-setup.tex \
-    -V luatexjapresetoptions=hiragino-pron
-```
-
-### mount
-#### /workdir
-This is your working directory.
-
-#### /usr/share/fonts/SystemLibraryFonts
+**mount**
+- **/workdir**
+    This is your working directory.
+- **/usr/local/texlive/2020/texmf-var/luatex-cache**
+Persistent font cache volume can makes compile faster.
+- **/usr/share/fonts/SystemLibraryFonts**
 You can use Hiragino font If you are running docker on macOS.
 To use Hiragino font, mount /System/Library/Fonts to /usr/share/fonts/SystemLibraryFonts, and set luatexja-preset.
 
+### Compile
+
+#### Compile with ipa fonts
 ```
-\usepackage[hiragino-pron]{luatexja-preset}
+$ pandoc -s sample.md -o sample-ipa.pdf -N\
+    --pdf-engine=lualatex \
+    -F pandoc-crossref \
+    --listings -H /usr/local/pandoc/config/listings-setup.tex \
+    -V luatexjapresetoptions=ipa
 ```
 
-#### /usr/local/texlive/2020/texmf-var/luatex-cache
-Persistent font cache volume can makes compile faster.
+#### Compile with Hiragino fonts
+```
+$ pandoc -s sample.md -o sample-hiragino.pdf -N\
+    --pdf-engine=lualatex \
+    -F pandoc-crossref \
+    --listings -H /usr/local/pandoc/config/listings-setup.tex \
+    -V luatexjapresetoptions=hiragino-pron
+```
