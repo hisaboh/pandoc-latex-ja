@@ -43,8 +43,8 @@ WORKDIR /tmp/pandoc-crossref
 RUN apt install -y zlib1g-dev
 RUN cabal sandbox init
 RUN cabal install pandoc-crossref
-RUN mv /tmp/.cabal-sandbox/bin/pandoc-crossref /usr/local/bin
-RUN rm -rf /tmp/.cabal-sandbox/
+RUN mv /tmp/pandoc-crossref/.cabal-sandbox/bin/pandoc-crossref /usr/local/bin
+RUN rm -rf /tmp/pandoc-crossref/
 
 WORKDIR /usr/local/pandoc/config
 COPY config /usr/local/pandoc/config
